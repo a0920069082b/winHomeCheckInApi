@@ -3,6 +3,7 @@ using System;
 using Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace api.Migrations
@@ -14,12 +15,15 @@ namespace api.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.14-servicing-32113");
+                .HasAnnotation("ProductVersion", "2.1.11-servicing-32099")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Models.ActionsModels", b =>
                 {
                     b.Property<int>("action_id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("action")
                         .HasMaxLength(50);
@@ -46,7 +50,8 @@ namespace api.Migrations
             modelBuilder.Entity("Models.CheckinLogsModels", b =>
                 {
                     b.Property<int>("checkin_log_id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("create_time");
 
@@ -76,7 +81,8 @@ namespace api.Migrations
             modelBuilder.Entity("Models.FunctionNamesModels", b =>
                 {
                     b.Property<int>("function_name_id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("create_time");
 
@@ -106,7 +112,8 @@ namespace api.Migrations
             modelBuilder.Entity("Models.PermissionsModels", b =>
                 {
                     b.Property<int>("permission_id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("action_id");
 
@@ -138,7 +145,8 @@ namespace api.Migrations
             modelBuilder.Entity("Models.RolePermissionsModels", b =>
                 {
                     b.Property<int>("role_permission_id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("create_time");
 
@@ -170,7 +178,8 @@ namespace api.Migrations
             modelBuilder.Entity("Models.RolesModels", b =>
                 {
                     b.Property<int>("role_id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("create_time");
 

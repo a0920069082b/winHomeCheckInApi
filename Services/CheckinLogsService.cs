@@ -5,7 +5,6 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Models;
 using Repositories.IRepositories;
-using Resources.Request;
 using Resources.Response;
 using Services.Communication;
 using Services.IServices;
@@ -13,6 +12,8 @@ using Newtonsoft.Json;
 using Microsoft.IdentityModel.Tokens;
 using System.Net;
 using Microsoft.Extensions.Configuration;
+using Utils;
+using Resources.Request;
 
 namespace Services
 {
@@ -39,44 +40,51 @@ namespace Services
                 throw new ArgumentNullException(nameof(configuration));
         }
 
-        public async Task<SaveCheckinLogsResponse> CreateAsync()
+        public async Task<CheckInResource> CreateAsync()
         {
-            try
+
+
+            // Get User ID
+            var Request = _accessor.HttpContext.Request;
+            string Token = Request.Headers["Authorization"];
+            var jwtArr = Token.Split('.');
+            var PayLoad = JsonConvert.DeserializeObject<Dictionary<string, object>>(Base64UrlEncoder.Decode(jwtArr[1]));
+            var user = await _CheckinLogsRepository.FindUserID(PayLoad["nameid"].ToString());
+            // Get Client IP
+            WebClient webClient = new WebClient();
+            var user_ip = webClient.DownloadString("https://api.ipify.org");
+            // Get ServerIP
+            CreateIPUtils CreateIP = new CreateIPUtils();
+            string ServerIP = CreateIP.CreateIP(); //撈取本機電腦IP
+
+            InsertCheckInResource InsertCheckinLogs = new InsertCheckInResource
             {
-                var CheckinLogs = new CheckinLogsModels();
+                user_id = user.user_id,
+                ip = user_ip,
+                create_user_id = user.user_id,
+                update_user_id = user.user_id,
+            };
 
-                // Get User ID
-                var Request = _accessor.HttpContext.Request;
-                string Token = Request.Headers["Authorization"];
-                var jwtArr = Token.Split('.');
-                var PayLoad = JsonConvert.DeserializeObject<Dictionary<string, object>>(Base64UrlEncoder.Decode(jwtArr[1]));
-                var user = await _CheckinLogsRepository.FindUserID(PayLoad["nameid"].ToString());
-                CheckinLogs.user_id = user.user_id;
+            var CheckinLogs = _mapper.Map<InsertCheckInResource, CheckinLogsModels>(InsertCheckinLogs);
+            // bool in_company = user_ip.Contains(this._config["IP"]);
+            // if (in_company) {
+            //     int index = user_ip.IndexOf(this._config["IP"]);
+            //     if (index == 0) {
+            //         CheckinLogs.ip = user_ip;
+            //     }
+            // }
 
-                // Get Client IP
-                WebClient webClient = new WebClient();
-                var user_ip = webClient.DownloadString("https://api.ipify.org");
+            // if (CheckinLogs.ip == null) {
+            //     return new SaveCheckinLogsResponse("IP is invalid");
+            // }
 
-                bool in_company = user_ip.Contains(this._config["IP"]);
-                if (in_company) {
-                    int index = user_ip.IndexOf(this._config["IP"]);
-                    if (index == 0) {
-                        CheckinLogs.ip = user_ip;
-                    }
-                }
+            await _CheckinLogsRepository.CreateAsync(CheckinLogs);
 
-                if (CheckinLogs.ip == null) {
-                    return new SaveCheckinLogsResponse("IP is invalid");
-                }
+            CheckInResource CheckIn = new CheckInResource();
+            CheckIn.ServerIP = ServerIP;
+            CheckIn.ClientIP = user_ip;
 
-                await _CheckinLogsRepository.CreateAsync(CheckinLogs);
-                return new SaveCheckinLogsResponse(CheckinLogs);
-            }
-            catch (Exception ex)
-            {
-                // Do some logging stuff
-                return new SaveCheckinLogsResponse($"An error occurred when saving the category: {ex.Message}");
-            }
+            return CheckIn;
         }
 
         public async Task<IEnumerable<CheckinLogsResource>> ReadAllAsync(string log)

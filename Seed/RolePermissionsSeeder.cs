@@ -16,7 +16,7 @@ namespace Seed
                 {
                     for (int i = 1; i < 21; i++)
                     {
-                        await context.role_permissions.AddAsync(new RolePermissionsModels() { role_permission_id = i, role_id = 1, permission_id = i, create_user_id = null, update_user_id = null, create_time = DateTime.Now, update_time = DateTime.Now });
+                        await context.role_permissions.AddAsync(new RolePermissionsModels() { role_id = 1, permission_id = i, create_user_id = null, update_user_id = null, create_time = DateTime.Now, update_time = DateTime.Now });
                         await context.SaveChangesAsync();
                     }
                 }).Wait();

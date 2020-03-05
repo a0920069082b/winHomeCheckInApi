@@ -44,14 +44,11 @@ namespace Controllers
         [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<CheckinLogsModels>> CreateAsync()
+        public async Task<ActionResult<CheckInResource>> CreateAsync()
         {
             var result = await _CheckinLogsService.CreateAsync();
-            if (!result.Success)
-               return BadRequest(result.Message);
 
-
-            return Ok(new { msg = "新增成功" });
+            return Ok(result);
         }
 
         /// <summary>

@@ -28,17 +28,17 @@ namespace Services
 
         public async Task<SaveActionsResponse> CreateAsync(InsertActionsResource resource)
         {
-            try
-            {
+            // try
+            // {
                 var Actions = _mapper.Map<InsertActionsResource, ActionsModels>(resource);
                 await _ActionsRepository.CreateAsync(Actions);
                 return new SaveActionsResponse(Actions);
-            }
-            catch (Exception ex)
-            {
-                // Do some logging stuff
-                return new SaveActionsResponse($"An error occurred when saving the category: {ex.Message}");
-            }
+            // }
+            // catch (Exception ex)
+            // {
+            //     // Do some logging stuff
+            //     return new SaveActionsResponse($"An error occurred when saving the category: {ex.Message}");
+            // }
         }
 
         public async Task<IEnumerable<ActionsResource>> ReadAllAsync(string action)

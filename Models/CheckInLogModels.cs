@@ -15,7 +15,6 @@ namespace Models
 
         public string ip { get; set; }
 
-
         [ForeignKey("user_id")]
         public virtual UsersModels users { get; set; }
 

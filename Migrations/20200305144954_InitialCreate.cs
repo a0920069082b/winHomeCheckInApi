@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace api.Migrations
@@ -16,7 +17,7 @@ namespace api.Migrations
                     create_time = table.Column<DateTime>(nullable: false),
                     update_time = table.Column<DateTime>(nullable: false),
                     permission_id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     function_name_id = table.Column<int>(nullable: true),
                     action_id = table.Column<int>(nullable: true)
                 },
@@ -34,7 +35,7 @@ namespace api.Migrations
                     create_time = table.Column<DateTime>(nullable: false),
                     update_time = table.Column<DateTime>(nullable: false),
                     role_permission_id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     role_id = table.Column<int>(nullable: true),
                     permission_id = table.Column<int>(nullable: true)
                 },
@@ -79,7 +80,7 @@ namespace api.Migrations
                     create_time = table.Column<DateTime>(nullable: false),
                     update_time = table.Column<DateTime>(nullable: false),
                     action_id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     action = table.Column<string>(maxLength: 50, nullable: true)
                 },
                 constraints: table =>
@@ -108,7 +109,7 @@ namespace api.Migrations
                     create_time = table.Column<DateTime>(nullable: false),
                     update_time = table.Column<DateTime>(nullable: false),
                     checkin_log_id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     user_id = table.Column<string>(nullable: true),
                     ip = table.Column<string>(nullable: true)
                 },
@@ -144,7 +145,7 @@ namespace api.Migrations
                     create_time = table.Column<DateTime>(nullable: false),
                     update_time = table.Column<DateTime>(nullable: false),
                     function_name_id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     function_name = table.Column<string>(maxLength: 50, nullable: true),
                     function_name_chinese = table.Column<string>(maxLength: 50, nullable: true)
                 },
@@ -174,7 +175,7 @@ namespace api.Migrations
                     create_time = table.Column<DateTime>(nullable: false),
                     update_time = table.Column<DateTime>(nullable: false),
                     role_id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     role = table.Column<string>(maxLength: 10, nullable: false)
                 },
                 constraints: table =>
