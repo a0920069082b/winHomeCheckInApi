@@ -42,8 +42,6 @@ namespace Services
 
         public async Task<CheckInResource> CreateAsync()
         {
-
-
             // Get User ID
             var Request = _accessor.HttpContext.Request;
             string Token = Request.Headers["Authorization"];
@@ -54,10 +52,10 @@ namespace Services
             WebClient webClient = new WebClient();
             var user_ip = webClient.DownloadString("https://api.ipify.org");
             // Get ServerIP
-            CreateIPUtils CreateIP = new CreateIPUtils();
-            string ServerIP = CreateIP.CreateIP(); //撈取本機電腦IP
+            GetIPAddressUtils CreateIP = new GetIPAddressUtils();
+            string ServerIP = CreateIP.GetIPAddress(); //撈取本機電腦IP
 
-            InsertCheckInResource InsertCheckinLogs = new InsertCheckInResource
+            CheckinLogsModels CheckinLogs = new CheckinLogsModels
             {
                 user_id = user.user_id,
                 ip = user_ip,
@@ -65,7 +63,7 @@ namespace Services
                 update_user_id = user.user_id,
             };
 
-            var CheckinLogs = _mapper.Map<InsertCheckInResource, CheckinLogsModels>(InsertCheckinLogs);
+
             // bool in_company = user_ip.Contains(this._config["IP"]);
             // if (in_company) {
             //     int index = user_ip.IndexOf(this._config["IP"]);
@@ -80,9 +78,12 @@ namespace Services
 
             await _CheckinLogsRepository.CreateAsync(CheckinLogs);
 
-            CheckInResource CheckIn = new CheckInResource();
-            CheckIn.ServerIP = ServerIP;
-            CheckIn.ClientIP = user_ip;
+            CheckInResource CheckIn = new CheckInResource
+            {
+                ServerIP = ServerIP,
+                ClientIP = user_ip,
+            };
+
 
             return CheckIn;
         }

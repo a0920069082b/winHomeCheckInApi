@@ -2,9 +2,10 @@ using System.Net;
 
 namespace Utils
 {
-    class CreateIPUtils
+    class GetIPAddressUtils
     {
-        public string CreateIP() {
+        public string GetIPAddress()
+        {
             string IP = string.Empty;
             // 取得本機名稱
             string strHostName = Dns.GetHostName();
@@ -18,7 +19,7 @@ namespace Utils
                 // 只取得IP V4的Address
                 if (ipaddress.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
                 {
-                   IP =  ipaddress.ToString();
+                    IP = ipaddress.ToString();
                 }
             }
             return IP;
