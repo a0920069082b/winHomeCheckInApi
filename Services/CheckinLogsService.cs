@@ -61,6 +61,8 @@ namespace Services
                 ip = user_ip,
                 create_user_id = user.user_id,
                 update_user_id = user.user_id,
+                create_time = DateTime.Now,
+                update_time = DateTime.Now,
             };
 
 
